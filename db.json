@@ -1,0 +1,29 @@
+{
+  "todos": [
+    {
+      "name": "New todo 1",
+      "isComplete": false,
+      "id": 1
+    },
+    {
+      "name": "New todo 2",
+      "isComplete": false,
+      "id": 2
+    },
+    {
+      "name": "New todo 3",
+      "isComplete": false,
+      "id": 3
+    },
+    {
+      "name": "New todo 4",
+      "isComplete": false,
+      "id": 4
+    },
+    {
+      "name": "Added",
+      "isComplete": false,
+      "id": 5
+    }
+  ]
+}
