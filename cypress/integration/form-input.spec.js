@@ -1,6 +1,6 @@
 describe("Form input", () => {
   beforeEach(() => {
-    cy.visit("/");
+    cy.seedAndVisit([]);
   });
 
   it("Visits the app", () => {

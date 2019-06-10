@@ -1,34 +1,36 @@
-import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
-import TodoForm from './TodoForm'
-import TodoList from './TodoList'
-import Footer from './Footer'
-import { saveTodo, loadTodos, destroyTodo, updateTodo } from '../lib/service'
-import { filterTodos } from '../lib/utils'
-import { setScheduler } from 'bluebird'
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import TodoForm from "./TodoForm";
+import TodoList from "./TodoList";
+import Footer from "./Footer";
+import { saveTodo, loadTodos, destroyTodo, updateTodo } from "../lib/service";
+import { filterTodos } from "../lib/utils";
+import { setScheduler } from "bluebird";
 
 export default class TodoApp extends Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      currentTodo: '',
+      currentTodo: "",
       todos: []
-    }
-    this.handleNewTodoChange = this.handleNewTodoChange.bind(this)
-    this.handleTodoSubmit = this.handleTodoSubmit.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
-    this.handleToggle = this.handleToggle.bind(this)
+    };
+    this.handleNewTodoChange = this.handleNewTodoChange.bind(this);
+    this.handleTodoSubmit = this.handleTodoSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
   }
 
   componentDidMount() {
-    loadTodos()
-      .then(({ data }) => this.setState({ todos: data }))
-      .catch(() => this.setState({ error: true }))
+    setTimeout(() => {
+      loadTodos()
+        .then(({ data }) => this.setState({ todos: data }))
+        .catch(() => this.setState({ error: true }));
+    }, 5000);
   }
 
   handleNewTodoChange(evt) {
-    this.setState({ currentTodo: evt.target.value })
+    this.setState({ currentTodo: evt.target.value });
   }
 
   handleDelete(id) {
@@ -38,18 +40,18 @@ export default class TodoApp extends Component {
           todos: this.state.todos.filter(t => t.id !== id)
         })
       )
-      .catch(() => this.setState({ error: true }))
+      .catch(() => this.setState({ error: true }));
   }
 
   handleToggle(id) {
-    const targetTodo = this.state.todos.find(t => t.id === id)
+    const targetTodo = this.state.todos.find(t => t.id === id);
     const updated = {
       ...targetTodo,
       isComplete: !targetTodo.isComplete
-    }
+    };
     updateTodo(updated)
       .then(({ data }) => {
-        const todos = this.state.todos.map(t => (t.id === data.id ? data : t))
+        const todos = this.state.todos.map(t => (t.id === data.id ? data : t));
         // To practice debugging, comment out the line above and uncomment these
         // const targetIndex = this.state.todos.findIndex(t => t.id === data.id)
         // const todos = [
@@ -57,26 +59,26 @@ export default class TodoApp extends Component {
         //   data,
         //   ...this.state.todos.slice(targetIndex) /* <-- the bug! */
         // ]
-        this.setState({ todos: todos })
+        this.setState({ todos: todos });
       })
-      .catch(() => this.setState({ error: true }))
+      .catch(() => this.setState({ error: true }));
   }
 
   handleTodoSubmit(evt) {
-    evt.preventDefault()
-    const newTodo = { name: this.state.currentTodo, isComplete: false }
+    evt.preventDefault();
+    const newTodo = { name: this.state.currentTodo, isComplete: false };
     saveTodo(newTodo)
       .then(({ data }) =>
         this.setState({
           todos: this.state.todos.concat(data),
-          currentTodo: ''
+          currentTodo: ""
         })
       )
-      .catch(() => this.setState({ error: true }))
+      .catch(() => this.setState({ error: true }));
   }
 
   render() {
-    const remaining = this.state.todos.filter(t => !t.isComplete).length
+    const remaining = this.state.todos.filter(t => !t.isComplete).length;
     return (
       <Router>
         <div>
@@ -104,6 +106,6 @@ export default class TodoApp extends Component {
           <Footer remaining={remaining} />
         </div>
       </Router>
-    )
+    );
   }
 }
